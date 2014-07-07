@@ -16,5 +16,5 @@ EigenTensorDecomposition <- function (matrix.array)
                        diag (eigen.mat) <- diag (eigen.mat) / 2
                        eigen.mat
                    })
-        return (list ('values' = eigen.dec $ values [1:n.tensor], 'matrices' = eigen.matrices)
+        return (list ('values' = eigen.dec $ values [1:n.tensor], 'matrices' = eigen.matrices))
     }
