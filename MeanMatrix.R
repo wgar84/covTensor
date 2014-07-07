@@ -12,7 +12,7 @@ MeanMatrix <- function (matArray, tol = 1e-14, max.steps = 100)
               inv.Mk <- solve (Mk)
               centered.now <- apply (A, 3, logm.single, inv.Mk = inv.Mk)
               o <- array (- rowMeans (centered.now), c(nrow (A), nrow (A)))
-              frob.norm.o <- sqrt (sum (diag (t (o) %*% o)))
+              frob.norm.o <- FrobNorm (o)
               if (frob.norm.o < tol)
                   break
               Mk <- expm (- o) %*% Mk
