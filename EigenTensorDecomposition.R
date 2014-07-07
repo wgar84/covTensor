@@ -1,5 +1,6 @@
 EigenTensorDecomposition <- function (matrix.array)
-    ### performs eigentensor decomposition on a set of matrices in array form, following Basser \& Pajevic, 2007
+    ### performs eigentensor decomposition on a set of matrices in array form,
+    ### following Basser \& Pajevic, 2007
     {
         n.traits <- dim (matrix.array) [1]
         n.matrix <- dim (matrix.array) [3]
