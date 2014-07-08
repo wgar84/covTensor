@@ -1,4 +1,4 @@
-FrobDistance <- function (A, B)
+FrobDist <- function (A, B)
     ### Computes Frobenius distance between two matrices
     {
         difference <- A - B
