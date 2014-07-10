@@ -1,5 +1,5 @@
 EigenTensorDecomposition <-
-    function (matrix.array)
+    function (matrix.array, return.projection = FALSE)
     ### performs eigentensor decomposition on a set of matrices in array form,
     ### following Basser \& Pajevic, 2007
     {
@@ -19,7 +19,21 @@ EigenTensorDecomposition <-
                        diag (eigen.mat) <- diag (eigen.mat) / 2
                        eigen.mat
                    })
-        return (list ('values' = eigen.dec $ values [1:n.tensor],
-                      'matrices' = eigen.matrices))
+        eigen.matrices <- aperm (eigen.matrices, c(2, 3, 1), resize = TRUE)
+        dimnames (eigen.matrices) <-
+            list (rownames (matrix.array),
+                  colnames (matrix.array),
+                  paste ('EM', 1:n.tensor, sep = ''))
+        out <- list ('values' = eigen.dec $ values [1:n.tensor],
+                     'matrices' = eigen.matrices,
+                     'Sigma' = Sigma)
+        if (return.projection)
+            {
+                project <- aaply (matrix.array, 3, function (A, B)
+                                  aaply (B, 3, FrobInner, B = A, .dims = TRUE),
+                                  B = eigen.matrices, .dims = TRUE)
+                out $ projection <- project
+            }
+        return (out)
     }
 

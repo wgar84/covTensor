@@ -9,3 +9,4 @@ FrobInner <- function (A, B)
 FrobCos <- function (A, B)
   ### Computes cosine of the angle between two matrices
   FrobInner (A, B) / FrobNorm (A) * FrobNorm (B)
+
