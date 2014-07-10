@@ -22,3 +22,4 @@ EigenTensorDecomposition <-
         return (list ('values' = eigen.dec $ values [1:n.tensor],
                       'matrices' = eigen.matrices))
     }
+
