@@ -30,8 +30,8 @@ EigenTensorDecomposition <-
         if (return.projection)
             {
                 project <- aaply (matrix.array, 3, function (A, B)
-                                  aaply (B, 3, FrobInner, B = A, .dims = TRUE),
-                                  B = eigen.matrices, .dims = TRUE)
+                                  aaply (B, 3, FrobInner, B = A),
+                                  B = eigen.matrices)
                 out $ projection <- project
             }
         return (out)
