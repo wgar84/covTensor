@@ -37,7 +37,7 @@ MatrixDist.list <-
   {
     DistFunc <-  eval (parse (text = paste (method, 'Dist', sep = '')))
     if (!is.null (B))
-      laply (A, 3, DistFunc, B = B)
+      laply (A, DistFunc, B = B)
     else
       Pairwise (A, DistFunc, parallel = parallel)
   }
