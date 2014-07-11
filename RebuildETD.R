@@ -1,15 +1,16 @@
 ReTransETD <-
-    function (etd, mean.matrix, at.sd = c (-1.96, 1.96), n.dim = NULL, log.matrix = TRUE)
+    function (etd.values, etd.matrices, mean.matrix,
+              at.sd = c (-1.96, 1.96), n.dim = NULL, log.matrix = TRUE)
     ### reverts eigenmatrices back to the manifold of Sym-PD matrices,
     ### at points defined with respect to the SD of each direction
     ### for n.dim principal eigenmatrices
     {
         if (is.null (n.dim))
-            n.dim <- length (etd $ values)
-        at.actual.values <- outer (sqrt (etd $ values [1:n.dim]), at.sd)
+            n.dim <- length (etd.values)
+        at.actual.values <- outer (sqrt (etd.values [1:n.dim]), at.sd)
         sampled.matrices <-
             aaply (1:n.dim, 1, function (i)
-                   etd $ matrices [, , i] %o% at.actual.values [i, ])
+                   etd.matrices [, , i] %o% at.actual.values [i, ])
         mean.sqrt <- sqrtm (mean.matrix)
         if (log.matrix)
             sampled.matrices <-
@@ -19,6 +20,7 @@ ReTransETD <-
             sampled.matrices <-
                 aaply (sampled.matrices, c (1, 4), function (x)
                        mean.sqrt %*% x %*% mean.sqrt)
+        dim ()
         sampled.matrices
     }
 
@@ -36,6 +38,7 @@ CenterMatrices <-
         if (log.matrix)
             out <- aaply (out, 1, logm, .parallel = parallel)
         out <- aperm (out, c (2, 3, 1), resize = TRUE)
+        dimnames (out) <- dimnames (matrix.array)
         out
     }
 
