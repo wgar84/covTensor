@@ -6,7 +6,7 @@ EigenTensorDecomposition <-
         n.traits <- dim (matrix.array) [1]
         n.matrix <- dim (matrix.array) [3]
         Sigma <- BuildSigma (matrix.array)
-        n.tensor <- min (n.matrix, dim (Sigma) [1])
+        n.tensor <- min (n.matrix - 1, dim (Sigma) [1])
         eigen.dec <- eigen (Sigma)
         eigen.matrices <-
             aaply (eigen.dec $ vectors [, 1:n.tensor], 2, ### ematrices with non-zero evals
@@ -23,7 +23,7 @@ EigenTensorDecomposition <-
         dimnames (eigen.matrices) <-
             list (rownames (matrix.array),
                   colnames (matrix.array),
-                  paste ('EM', 1:n.tensor, sep = ''))
+                  paste ('PM', 1:n.tensor, sep = ''))
         out <- list ('values' = eigen.dec $ values [1:n.tensor],
                      'matrices' = eigen.matrices,
                      'Sigma' = Sigma)

@@ -42,4 +42,20 @@ CenterMatrices <-
         out
     }
 
-
+BuildMatrix <-
+    function (scores, etd, mean.matrix, standardized = FALSE, log.matrix = TRUE)
+    ### builds matrix using etd as a basis
+    {
+        n.pm <- length (scores)
+        if (standardized)
+            scores <- scores * etd $ values [1:n.pm]
+        projected <-
+            aaply (1:n.pm, 1, function (i) etd $ matrices [, , i] * scores [i])
+        matrix.sum <- aaply (projected, c (2, 3), sum)
+        if (log.matrix)
+            matrix.sum <- expm (matrix.sum)
+        recenter.matrix <- sqrtm (mean.matrix)
+        out <- recenter.matrix %*% matrix.sum %*% recenter.matrix
+        dimnames (out) <- dimnames (etd $ matrices) [1:2]
+        out
+    }
