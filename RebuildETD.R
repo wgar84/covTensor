@@ -67,3 +67,12 @@ BuildMatrix <-
         dimnames (out) <- dimnames (etd $ matrices) [1:2]
         out
     }
+
+ProjectMatrix <-
+  function (matrix, etd, mean.matrix, inv.sqrt = FALSE)
+  {
+    if (!inv.sqrt)
+      mean.matrix <- solve (sqrtm (mean.matrix))
+    log.center.mat <- logm (mean.matrix %*% matrix %*% mean.matrix)
+    aaply (etd $ matrices, 3, FrobInner, B = log.center.mat)
+  }
