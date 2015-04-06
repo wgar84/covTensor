@@ -68,6 +68,31 @@ BuildMatrix <-
         out
     }
 
+BuildMatrix.NC <-
+    function (scores, etd, standardized = FALSE, log.matrix = TRUE)
+    ### builds matrix using etd as a basis
+    {
+        n.pm <- length (scores)
+        if (standardized)
+            scores <- scores * etd $ values [1:n.pm]
+        if (n.pm == 1)
+            {
+                projected <- etd $ matrices [, , 1] * scores
+                matrix.sum <- projected
+            }
+        else
+            {
+                projected <-
+                    aaply (1:n.pm, 1, function (i) etd $ matrices [, , i] * scores [i])
+                matrix.sum <- aaply (projected, c (2, 3), sum)
+            }
+        if (log.matrix)
+          out <- expm (matrix.sum)
+        dimnames (out) <- dimnames (etd $ matrices) [1:2]
+        out
+    }
+
+
 ProjectMatrix <-
   function (matrix, etd, mean.matrix, inv.sqrt = FALSE)
   {

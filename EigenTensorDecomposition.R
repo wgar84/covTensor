@@ -33,6 +33,7 @@ EigenTensorDecomposition <-
                                   aaply (B, 3, FrobInner, B = A),
                                   B = eigen.matrices)
                 out $ projection <- project
+                out $ projection <- scale (out $ projection, center = FALSE, scale = TRUE)
             }
         return (out)
     }
