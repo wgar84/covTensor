@@ -38,18 +38,14 @@ CheapMean <- function (mat.array, parallel = FALSE, tol = 1e-08)
           aaply (1:n.mat, 1, function (i)
                  {
                    sqA.nu <- sqrtm(A.nu[, , i])
-                   print('rooted')
                    arr.log <-
                      aaply (A.nu, 3, logm.single, Ai.is = solve (sqA.nu))
-                   print('logged')
                    arr.log <- aperm (arr.log, c(2, 3, 1))
                    arr.sum <- expm (aaply (arr.log, c(1, 2), mean))
-                   print('experienced')
                    sqA.nu %*% arr.sum %*% sqA.nu
                  }, .parallel = parallel)
         A.nu <- aperm (A.nu, c(2, 3, 1))
         dist.mat <- Pairwise(A.nu, RiemannDist, parallel = parallel)
-        print('matched')
         print (mean (dist.mat))
         if (mean (dist.mat) < tol)
           break
