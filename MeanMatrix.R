@@ -26,3 +26,33 @@ MeanMatrix <- function (matArray, tol = 1e-14, max.steps = 100, parallel = FALSE
       return (Mk)
   }
 
+CheapMean <- function (mat.array, parallel = FALSE, tol = 1e-08)
+  {
+    ## DA Bini
+    logm.single <- function (Aj, Ai.is) return (logm (Ai.is %*% Aj %*% Ai.is))
+    n.mat <- dim (mat.array) [3]
+    A.nu <- mat.array
+    repeat
+      {
+        A.nu <-
+          aaply (1:n.mat, 1, function (i)
+                 {
+                   sqA.nu <- sqrtm(A.nu[, , i])
+                   print('rooted')
+                   arr.log <-
+                     aaply (A.nu, 3, logm.single, Ai.is = solve (sqA.nu))
+                   print('logged')
+                   arr.log <- aperm (arr.log, c(2, 3, 1))
+                   arr.sum <- expm (aaply (arr.log, c(1, 2), mean))
+                   print('experienced')
+                   sqA.nu %*% arr.sum %*% sqA.nu
+                 }, .parallel = parallel)
+        A.nu <- aperm (A.nu, c(2, 3, 1))
+        dist.mat <- Pairwise(A.nu, RiemannDist, parallel = parallel)
+        print('matched')
+        print (mean (dist.mat))
+        if (mean (dist.mat) < tol)
+          break
+      }
+    A.nu [, , 1]
+  }

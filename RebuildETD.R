@@ -61,7 +61,7 @@ BuildMatrix <-
                 matrix.sum <- aaply (projected, c (2, 3), sum)
             }
         if (log.matrix)
-            matrix.sum <- expm (matrix.sum)
+          matrix.sum <- expm (matrix.sum)
         recenter.matrix <- sqrtm (mean.matrix)
         out <- recenter.matrix %*% matrix.sum %*% recenter.matrix
         dimnames (out) <- dimnames (etd $ matrices) [1:2]
